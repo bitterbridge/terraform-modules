@@ -33,7 +33,7 @@ variable "repository_name" {
   }
 
   validation {
-    condition     = can(regex("^[a-z0-9_-]+$", var.repository_name))
-    error_message = "The repository name must contain only lowercase letters, numbers, underscores, and hyphens"
+    condition     = can(regex("^[.a-z0-9_-]+$", var.repository_name))
+    error_message = "The repository name must contain only lowercase letters, numbers, underscores, dots, and hyphens"
   }
 }
