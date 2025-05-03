@@ -1,13 +1,3 @@
-variable "aws_account_id" {
-  type        = string
-  description = "The account ID of the AWS account"
-
-  validation {
-    condition     = can(regex("^[0-9]{12}$", var.aws_account_id))
-    error_message = "AWS account ID must be 12 digits"
-  }
-}
-
 variable "iam_role_arn" {
   description = "The ARN of the IAM role to assume"
   type        = string
