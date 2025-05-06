@@ -7,3 +7,9 @@ variable "organization_name" {
     error_message = "The organization name must be provided"
   }
 }
+
+variable "repositories_query" {
+  description = "The query to filter repositories"
+  type        = string
+  default     = ""
+}
