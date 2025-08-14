@@ -1,5 +1,5 @@
 module "github_oidc_role_variable" {
-  source = "github.com/bitterbridge/terraform-modules//terraform/modules/github_oidc_role_variable?ref=v0.0.172"
+  source = "github.com/bitterbridge/terraform-modules//terraform/modules/github_oidc_role_variable?ref=v0.0.173"
 
   for_each = toset(keys(module.repositories.repositories))
 
