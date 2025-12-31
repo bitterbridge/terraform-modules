@@ -1,5 +1,5 @@
 module "github_app_variables" {
-  source = "github.com/bitterbridge/terraform-modules//terraform/modules/github_app_variables?ref=v0.0.406"
+  source = "github.com/bitterbridge/terraform-modules//terraform/modules/github_app_variables?ref=v0.0.408"
 
   for_each = toset(keys(module.repositories.repositories))
 
