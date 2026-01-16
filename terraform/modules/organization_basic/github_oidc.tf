@@ -5,7 +5,7 @@ module "github_oidc" {
   create_oidc_provider      = false
   oidc_provider_arn         = "arn:aws:iam::665449637458:oidc-provider/token.actions.githubusercontent.com"
   create_oidc_role          = true
-  repositories              = [for repository in toset(keys(module.repositories.repositories)) : "${var.organization_name}/${repository}"]
+  repositories              = ["${var.organization_name}/*"]
   oidc_role_attach_policies = ["arn:aws:iam::aws:policy/AdministratorAccess"]
   role_name                 = "${var.organization_name}-github-oidc"
 }
