@@ -8,8 +8,12 @@ variable "organization_name" {
   }
 }
 
-variable "repositories_query" {
-  description = "The query to filter repositories"
-  type        = string
-  default     = ""
+variable "repositories" {
+  description = "List of repository names to configure"
+  type        = list(string)
+
+  validation {
+    condition     = length(var.repositories) > 0
+    error_message = "At least one repository must be provided"
+  }
 }
