@@ -28,3 +28,14 @@ variable "state_bucket_name" {
     error_message = "state_bucket_name must be a valid S3 bucket name: 3-63 lowercase letters, digits, dots, and hyphens."
   }
 }
+
+variable "oidc_subject_owner" {
+  description = "Owner part of the OIDC subject the role trusts. Defaults to <organization_name>; set it to <organization_name>@<owner-id> for orgs whose tokens use GitHub's immutable subject format (repo:org@id/repo@id:...)."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.oidc_subject_owner == null || can(regex("^[A-Za-z0-9-]+@[0-9]+$", var.oidc_subject_owner))
+    error_message = "oidc_subject_owner must look like <organization_name>@<numeric owner id>."
+  }
+}
