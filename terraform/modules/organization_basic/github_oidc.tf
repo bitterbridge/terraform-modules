@@ -1,5 +1,9 @@
 locals {
-  oidc_repositories = ["${coalesce(var.oidc_subject_owner, var.organization_name)}/*"]
+  oidc_repositories = (
+    var.oidc_repositories != null
+    ? var.oidc_repositories
+    : ["${coalesce(var.oidc_subject_owner, var.organization_name)}/*"]
+  )
 }
 
 module "github_oidc" {
