@@ -39,3 +39,17 @@ variable "oidc_subject_owner" {
     error_message = "oidc_subject_owner must look like <organization_name>@<numeric owner id>."
   }
 }
+
+variable "oidc_repositories" {
+  description = "Repositories (owner/repo, optionally :subject-suffix) whose workflows may assume the OIDC role. Defaults to every repository in the organization; set it to limit the role's AdministratorAccess to the repos that apply infrastructure."
+  type        = list(string)
+  default     = null
+
+  validation {
+    condition = var.oidc_repositories == null ? true : (
+      length(var.oidc_repositories) > 0 &&
+      alltrue([for r in var.oidc_repositories : can(regex("^[A-Za-z0-9-]+(@[0-9]+)?/[^/:]+(:.+)?$", r))])
+    )
+    error_message = "oidc_repositories must be a non-empty list of owner/repo entries."
+  }
+}

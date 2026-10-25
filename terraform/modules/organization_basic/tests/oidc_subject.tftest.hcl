@@ -17,7 +17,7 @@ run "defaults_to_org_name" {
   }
 
   assert {
-    condition     = local.oidc_repositories == ["goldentooth/*"]
+    condition     = local.oidc_repositories == tolist(["goldentooth/*"])
     error_message = "OIDC trust should default to <organization_name>/*"
   }
 }
@@ -32,7 +32,7 @@ run "immutable_subject_owner" {
   }
 
   assert {
-    condition     = local.oidc_repositories == ["BottomUpAI@345462692/*"]
+    condition     = local.oidc_repositories == tolist(["BottomUpAI@345462692/*"])
     error_message = "OIDC trust should use oidc_subject_owner when set"
   }
 }
@@ -47,4 +47,44 @@ run "rejects_owner_without_id" {
   }
 
   expect_failures = [var.oidc_subject_owner]
+}
+
+run "scoped_to_repositories" {
+  command = plan
+
+  variables {
+    organization_name  = "BottomUpAI"
+    oidc_subject_owner = "BottomUpAI@345462692"
+    oidc_repositories  = ["BottomUpAI@345462692/terraform@1432185857"]
+    repositories       = ["terraform"]
+  }
+
+  assert {
+    condition     = local.oidc_repositories == tolist(["BottomUpAI@345462692/terraform@1432185857"])
+    error_message = "oidc_repositories should replace the org-wide pattern when set"
+  }
+}
+
+run "rejects_empty_repositories" {
+  command = plan
+
+  variables {
+    organization_name = "BottomUpAI"
+    oidc_repositories = []
+    repositories      = ["terraform"]
+  }
+
+  expect_failures = [var.oidc_repositories]
+}
+
+run "rejects_repository_without_owner" {
+  command = plan
+
+  variables {
+    organization_name = "BottomUpAI"
+    oidc_repositories = ["*"]
+    repositories      = ["terraform"]
+  }
+
+  expect_failures = [var.oidc_repositories]
 }
